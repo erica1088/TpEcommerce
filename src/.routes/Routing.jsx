@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import Register from "../.page/Register"
+import Register from "../.page/Register.jsx"
 
 
 const Routing = () =>{
