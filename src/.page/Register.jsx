@@ -11,7 +11,7 @@ export const Register = () =>{
         const [show, setShow] = useState(false);
         const handleClick = () => setShow(!show);
         const { register, formState, handleSubmit } = useForm();
-        const { errors } = formState;
+        const { error } = formState;
       
         const { registerUser } = useAuth();
        
@@ -22,7 +22,7 @@ export const Register = () =>{
         return (
           <Box maxW="400px" mx="auto" mt="10">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.email}>
+              <FormControl isInvalid={error.email}>
                 <FormLabel htmlFor="email">Usuario</FormLabel>
                 <Input
                   type="email"
@@ -30,9 +30,9 @@ export const Register = () =>{
                   placeholder="Ingresa tu nombre/usuario"
                   {...register("email", email)}
                 />
-                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+                <FormErrorMessage>{error.email?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.password}>
+              <FormControl isInvalid={error.password}>
                 <FormLabel htmlFor="password">Contraseña</FormLabel>
                 <InputGroup size="md">
                   <Input
@@ -48,7 +48,7 @@ export const Register = () =>{
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+                <FormErrorMessage>{error.password?.message}</FormErrorMessage>
               </FormControl>
               <Button mt={4} colorScheme="teal" type="submit" width="100%">
                 Registrarme

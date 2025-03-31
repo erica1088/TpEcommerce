@@ -1,8 +1,8 @@
-import { Children, createContext, useContext, useState } from "react";
+import { children, createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ Children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const registerUser = async ({ email, password }) => {
@@ -10,7 +10,7 @@ export const AuthProvider = ({ Children }) => {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       )
       //console.log(userCredential)
        
@@ -26,7 +26,7 @@ export const AuthProvider = ({ Children }) => {
   };
   return (
     <AuthContext.Provider value={{ user, registerUser }}>
-      {Children}
+      {children}
     </AuthContext.Provider>
   );
 }
