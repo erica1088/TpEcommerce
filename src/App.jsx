@@ -1,14 +1,7 @@
-
-import './App.css'
-import Register from './.page/Register.jsx'
-
+import Routing from "./.routes/Routing.jsx";
 
 function App() {
-  
-
-  return (
-   <Register/>
-  )
+  return <Routing />
 }
 
 export default App;
