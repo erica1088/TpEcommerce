@@ -1,14 +1,7 @@
-
-
-import Routing from './.routes/Routing.jsx';
-
+import Routing from "./.routes/Routing.jsx";
 
 function App() {
-  
-
-  return (
-  <Routing/>
-  )
+  return <Routing />
 }
 
 export default App;
