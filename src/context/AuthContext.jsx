@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUser(userCredential.user);
      
-      // console.log(userCredential);
+      console.log(userCredential);
 
       const user = userCredential.user;
       console.log(user);
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   //funcion para logearse con google
 
   const signInWithGoogle = async () => {
-    // const provider = new GoogleAuthProvider();
+ 
     const provider = new GoogleAuthProvider();
 
     try {
