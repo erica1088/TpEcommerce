@@ -1,12 +1,23 @@
-// src/.page/CartPage.jsx
 import React from "react";
 import { Box, Button, Text, VStack, Stack, IconButton } from "@chakra-ui/react";
-import { useCart } from "../context/CartContext"; // Importing the CartContext
-import { FaTrashAlt } from "react-icons/fa"; // Import for trash icon for delete button
+import { useCart } from "../context/CartContext"; 
+import { FaTrashAlt } from "react-icons/fa"; 
+import { useAuth } from "../context/AuthContext";
 
 const CartPage = () => {
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, totalAmount, clearCart } =
-    useCart();
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, totalAmount, clearCart } = useCart();
+  const { user } = useAuth(); 
+  
+  if (!user) {
+    return (
+      <Box px={4} py={6}>
+        <Text fontSize="3xl" fontWeight="bold" mb={6}>
+          Carrito de compras
+        </Text>
+        <Text>No estás logueado. Por favor, inicia sesión para ver tu carrito.</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box px={4} py={6}>
@@ -14,11 +25,10 @@ const CartPage = () => {
         Carrito de compras
       </Text>
 
-      {/* When the cart is empty */}
+      
       {cart.length === 0 ? (
         <Text>No hay productos en el carrito.</Text>
       ) : (
-        // When the cart contains products
         <VStack spacing={4}>
           {cart.map((product) => (
             <Box
@@ -50,7 +60,6 @@ const CartPage = () => {
                   <Text>Cantidad: {product.quantity}</Text>
                 </VStack>
 
-                {/* Cart Actions */}
                 <Stack direction="row" spacing={4} align="center">
                   <Button size="sm" onClick={() => increaseQuantity(product.id)}>
                     Aumentar
@@ -72,7 +81,7 @@ const CartPage = () => {
         </VStack>
       )}
 
-      {/* Cart total and checkout options */}
+
       {cart.length > 0 && (
         <Box mt={4}>
           <Text fontSize="lg" fontWeight="bold">

@@ -6,13 +6,12 @@ import { Link as RouterLink } from "react-router-dom";
 import { useCart } from "../context/CartContext"; 
 import Footer from "../components/Footer";
 import Header from "../components//Header";
-import CartPage from "./ProductPage";
-import CartShopping from "../.page//CartShopping";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);  // state for the back to top button visibility
   const navigate = useNavigate();
   const { addToCart } = useCart(); 
 
@@ -30,7 +29,24 @@ const ProductList = () => {
     };
 
     fetchProducts();
+
+  
+    const handleScroll = () => {
+      if (window.scrollY > 300) {  
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) return <Text>Cargando productos...</Text>;
   if (error) return <Text>Hubo un error al cargar los productos.</Text>;
@@ -93,6 +109,21 @@ const ProductList = () => {
             </VStack>
           ))}
         </SimpleGrid>
+
+        {showBackToTop && (
+          <Button
+            position="fixed"
+            bottom="4"
+            right="4"
+            colorScheme="teal"
+            onClick={scrollToTop}
+            size="lg"
+            borderRadius="full"
+            boxShadow="lg"
+          >
+            ↑
+          </Button>
+        )}
       </Box>
       <Footer />
     </>

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {  getProducts, getUserProducts } from "../.services/order.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ const Home = () => {
   return (
     <div>
       <Header />
+      
     
   <Box >
     {error && <Text>Hubo un error</Text>}
@@ -76,6 +78,8 @@ const Home = () => {
           backgroundRepeat="no-repeat"
           backgroundAttachment="fixed"
           zIndex={-1}
+
+          
         >
           <Box
           // position="absolute"
@@ -102,6 +106,7 @@ const Home = () => {
         
         </Link>
       </VStack> */}
+      
         </Box>
       </Box>
       <Footer/>

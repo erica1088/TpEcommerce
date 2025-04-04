@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, HStack, IconButton, Text, Flex } from "@chakra-ui/react";
-import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
+import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { BsJustify } from "react-icons/bs";
 
 const Footer = () => {
@@ -48,7 +48,11 @@ const Footer = () => {
             fontSize="2xl"
             _hover={{ color: "blue.800" }}
           />
-          <IconButton as="a" href="" target="_blank" />
+          <IconButton as="a" href="https://www.instagram.com/eriacostaa/?utm_source=qr&igsh=djhxYjYyM2l4N2xo#" target="_blank"icon={<FaInstagram />}
+            aria-label="LinkedIn"
+            variant="ghost"
+            fontSize="2xl"
+            _hover={{ color: "blue.800" }} />
         </HStack>
       </Flex>
 
