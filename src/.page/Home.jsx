@@ -4,17 +4,14 @@ import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {  getProducts, getUserProducts } from "../.services/order.js";
+import { getProducts, getUserProducts } from "../.services/order.js";
 import { useAuth } from "../context/AuthContext.jsx";
-
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const {user} = useAuth
-
-  
+  const { user } = useAuth;
 
   useEffect(() => {
     const getData = async () => {
@@ -28,33 +25,27 @@ const Home = () => {
         setLoading(false);
       }
     };
-  
+
     getData();
   }, []);
-  
-
 
   return (
     <div>
       <Header />
-      
-    
-  <Box >
-    {error && <Text>Hubo un error</Text>}
-   
- {loading && <Text>Loading...</Text>}
- {products?.map((products) =>{
-  <VStack key={products.id}>
-    <Text>{products.name}</Text>
 
-  </VStack>
- })}
+      <Box>
+        {error && <Text>Hubo un error</Text>}
 
+        {loading && <Text>Loading...</Text>}
+        {products?.map((products) => {
+          <VStack key={products.id}>
+            <Text>{products.name}</Text>
+          </VStack>;
+        })}
 
-{!products && !products?.length && <Text>No hay Productos</Text>}
-
+        {!products && !products?.length && <Text>No hay Productos</Text>}
       </Box>
- 
+
       <Box
         position="relative"
         width="100%"
@@ -78,8 +69,6 @@ const Home = () => {
           backgroundRepeat="no-repeat"
           backgroundAttachment="fixed"
           zIndex={-1}
-
-          
         >
           <Box
           // position="absolute"
@@ -106,10 +95,9 @@ const Home = () => {
         
         </Link>
       </VStack> */}
-      
         </Box>
       </Box>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

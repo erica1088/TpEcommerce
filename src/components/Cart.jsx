@@ -59,7 +59,11 @@ const Cart = () => {
                 -
               </Button>
               <Text>{item.quantity}</Text>
-              <Button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</Button>
+              <Button
+                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+              >
+                +
+              </Button>
             </Stack>
           </Box>
         ))}
