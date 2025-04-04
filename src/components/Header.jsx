@@ -35,15 +35,13 @@ const NavLinks = ({ onClick }) => (
     <NavLink to="/login" onClick={onClick}>
       Iniciar sesión
     </NavLink>
-    
   </>
 );
 
 const Header = () => {
   const { isOpen, onOpen, onClose, totalItems } = useDisclosure();
   const Mobile = useBreakpointValue({ base: true, md: true, lg: false });
-  const { logout, user } = useAuth();  // Getting user from AuthContext
-
+  const { Logout, user } = useAuth();
   return (
     <Box>
       <HStack wrap="wrap">
@@ -100,14 +98,10 @@ const Header = () => {
                         {totalItems}
                       </Box>
                     ) : (
-                      <Text fontSize="sm" color="gray.500">
-                    
-                      </Text>
+                      <Text fontSize="sm" color="gray.500"></Text>
                     )
                   ) : (
-                    <Text fontSize="sm" color="gray.500">
-                    
-                    </Text>
+                    <Text fontSize="sm" color="gray.500"></Text>
                   )}
                 </Button>
               </RouterLink>
@@ -121,19 +115,16 @@ const Header = () => {
             <DrawerCloseButton />
             <DrawerHeader>Menú</DrawerHeader>
             <DrawerBody>
-              
               <Flex direction="column" gap={4}>
-             
                 <NavLinks onClick={onClose} />
                 <NavLink to="/carrito" onClick={onClose}>
-                 Carrito
+                  Carrito
                 </NavLink>
-                <NavLink as={Button} onClick={logout}>
+                <NavLink as={Button} onClick={Logout}>
                   <Text color="black" fontWeight="bold">
                     Cerrar sesión
                   </Text>
                 </NavLink>
-               
               </Flex>
             </DrawerBody>
           </DrawerContent>

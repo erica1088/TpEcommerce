@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
           isClosable: true,
           duration: 3000,
         });
-        navigate("/account");
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;

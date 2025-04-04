@@ -70,31 +70,8 @@ const Home = () => {
           backgroundAttachment="fixed"
           zIndex={-1}
         >
-          <Box
-          // position="absolute"
-          // top={0}
-          // left={0}
-          // width="100%"
-          // height="100%"
-          // bg="black"
-          // opacity={0.5}
-          // zIndex={-1}
-          />
-          {/* 
-      <VStack spacing={4}>
-        <Text fontSize={{base: "3xl", md:"5xl"}} fontWeight="bold">
-
-          Home wood 
-
-        </Text>
-        <Text fontSize={{base:"lg", md:"2xl"}} >
-          Ver Productos
-
-        </Text>
-        <Link>
+          
         
-        </Link>
-      </VStack> */}
         </Box>
       </Box>
       <Footer />

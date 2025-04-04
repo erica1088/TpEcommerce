@@ -1,93 +1,216 @@
-
-
+import React, { useState } from "react";
 import {
+  Box,
+  Image,
+  Text,
+  Button,
+  Heading,
+  SimpleGrid,
+  VStack,
   Drawer,
-  DrawerBody,
-  DrawerCloseButton,
+  DrawerOverlay,
   DrawerContent,
   DrawerHeader,
-  DrawerOverlay,
-  Button,
-  Box,
-  Text,
-  VStack,
-
+  DrawerBody,
+  DrawerFooter,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { createOrder } from "../firebase/createOrder";
+import { useNavigate } from "react-router-dom";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
-const CartShopping= ({ cartItems, onRemoveItem, onIncreaseQuantity, onDecreaseQuantity }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const CartShopping = ({ refreshProducts }) => {
+  const { cart, updateQuantity, removeFromCart, clearCart, totalItems } =
+    useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
+
+ 
+  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleCheckout = async () => {
+    if (!user || !user.uid) {
+      alert("Debes iniciar sesión para completar tu compra.");
+      return;
+    }
+
+    try {
+      await createOrder(cart, user.uid);
+      clearCart();
+      setOrderSuccess(true);
+      refreshProducts();
+      navigate("/Register");
+    } catch (error) {
+      console.error("Error al procesar el pedido:", error);
+      alert("Hubo un problema al procesar tu pedido.");
+    }
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+    navigate("/");
+  };
+
+  const handleIncreaseQuantity = (index) => {
+    updateQuantity(cart[index].id, cart[index].quantity + 1);
+  };
+
+  const handleDecreaseQuantity = (index) => {
+    if (cart[index].quantity > 1) {
+      updateQuantity(cart[index].id, cart[index].quantity - 1);
+    }
+  };
 
   return (
-    <>
-      <Button onClick={onOpen} colorScheme="teal" leftIcon={<AddIcon />} position="fixed" bottom="20px" right="20px">
-        Ver Carrito
-      </Button>
+    <Box p={4}>
+      <Heading as="h2" size="lg" mb={4} textAlign="center">
+        🛒 Mi Carrito ({totalItems})
+      </Heading>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
+      {cart.length === 0 ? (
+        <Text textAlign="center" fontSize="xl" color="gray.500">
+          Tu carrito está vacío.
+        </Text>
+      ) : (
+        <>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+            {cart.map(({ id, name, image_url, price, quantity }) => (
+              <Box
+                key={id}
+                borderWidth="1px"
+                borderRadius="lg"
+                p={4}
+                boxShadow="md"
+              >
+                <Image
+                  src={image_url}
+                  alt={name}
+                  boxSize="120px"
+                  objectFit="cover"
+                />
+                <Text fontWeight="bold">{name}</Text>
+                <Text fontSize="lg">${price} c/u</Text>
+                <Text fontSize="lg">Cantidad: {quantity}</Text>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Button
+                    onClick={() =>
+                      handleIncreaseQuantity(
+                        cart.findIndex((item) => item.id === id)
+                      )
+                    }
+                    colorScheme="blue"
+                    size="sm"
+                    mr={2}
+                    leftIcon={<AddIcon />}
+                  >
+                    Aumentar
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      handleDecreaseQuantity(
+                        cart.findIndex((item) => item.id === id)
+                      )
+                    }
+                    colorScheme="red"
+                    size="sm"
+                    mr={2}
+                    leftIcon={<MinusIcon />}
+                  >
+                    Disminuir
+                  </Button>
+                  <Button
+                    onClick={() => removeFromCart(id)}
+                    colorScheme="red"
+                    size="sm"
+                  >
+                    Eliminar
+                  </Button>
+                </Box>
+              </Box>
+            ))}
+          </SimpleGrid>
+
+          <Text fontSize="xl" fontWeight="bold" mt={6} textAlign="center">
+            Total a pagar: ${total.toFixed(2)}
+          </Text>
+
+          <Box display="flex" justifyContent="center">
+            <Button colorScheme="red" mt={4} onClick={clearCart}>
+               Vaciar Carrito
+            </Button>
+            <Button
+              colorScheme="green"
+              mt={4}
+              ml={2}
+              onClick={() => setIsDrawerOpen(true)}
+            >
+              Revisar pedido
+            </Button>
+          </Box>
+
+          <RouterLink to={`/productos`}>
+            <Button
+              colorScheme="transparent"
+              mt={2}
+              w="full"
+              textColor="blue"
+              fontSize="md"
+              fontWeight="normal"
+            >
+              Seguir comprando 
+            </Button>
+          </RouterLink>
+        </>
+      )}
+
+      
+      <Drawer
+        isOpen={isDrawerOpen}
+        placement="right"
+        onClose={() => setIsDrawerOpen(false)}
+      >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Carrito de Compras</DrawerHeader>
-
+          <DrawerHeader>Resumen de su Pedido</DrawerHeader>
           <DrawerBody>
-            <VStack spacing={4} align="stretch">
-              {cartItems.length === 0 ? (
-                <Text>No hay productos en el carrito.</Text>
-              ) : (
-                cartItems.map((item, index) => (
-                  <Box key={index} p={4} borderWidth={1} borderRadius="md">
-                    <Text fontWeight="bold">{item.name}</Text>
-                    <Text>Cantidad: {item.quantity}</Text>
-                    <Text>Precio: ${item.price}</Text>
-                    <Button
-                      onClick={() => onIncreaseQuantity(index)}
-                      colorScheme="blue"
-                      size="sm"
-                      mr={2}
-                      leftIcon={<AddIcon />}
-                    >
-                      Aumentar
-                    </Button>
-                    <Button
-                      onClick={() => onDecreaseQuantity(index)}
-                      colorScheme="red"
-                      size="sm"
-                      mr={2}
-                      leftIcon={<MinusIcon />}
-                    >
-                      Disminuir
-                    </Button>
-                    <Button
-                      onClick={() => onRemoveItem(index)}
-                      colorScheme="red"
-                      size="sm"
-                    >
-                      Eliminar
-                    </Button>
-                  </Box>
-                ))
-              )}
-            </VStack>
-            {cartItems.length > 0 && (
-              <Box mt={4}>
+            {orderSuccess ? (
+              <Text fontSize="lg" fontWeight="bold" color="green.500">
+                Se ha ralizado la compra exitosamente
+              </Text>
+            ) : (
+              <VStack spacing={4} align="start">
+                {cart.map(({ id, name, quantity }) => (
+                  <Text key={id}>
+                    {name} x {quantity}
+                  </Text>
+                ))}
                 <Text fontSize="lg" fontWeight="bold">
-                  Total: ${cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                  Total: ${total.toFixed(2)}
                 </Text>
-                <Button colorScheme="green" mt={4} width="100%">
-                  Proceder al Pago
-                </Button>
-
-                <Link to="/cart">
-        <Button colorScheme="teal">Ir al carrito</Button>
-      </Link>
-              </Box>
+              </VStack>
             )}
           </DrawerBody>
+          <DrawerFooter>
+            {orderSuccess ? (
+              <Button colorScheme="blue" onClick={handleCloseDrawer}>
+                Ir al Home
+              </Button>
+            ) : (
+              <Button colorScheme="green" onClick={handleCheckout}>
+                Confirmar Compra
+              </Button>
+            )}
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Box>
   );
 };
 
