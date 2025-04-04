@@ -13,7 +13,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext.jsx";
-import { email, password } from "../.utlis/Validations";
+import { email, password } from "../.utlis/Validations.js";
+
 
 export const Login = () => {
   const [show, setShow] = useState(false);
@@ -21,14 +22,18 @@ export const Login = () => {
 
   const { register, formState, handleSubmit } = useForm();
   const { errors } = formState;
-  const { login, signInWithGoogle } = useAuth();
+  const { login, signInWithGoogle, } = useAuth();
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     login(data);
   };
+
+
+
+
   return (
     <Box maxW="400px" mx="auto" mt="10">
-      <Heading>Iinicio de sesión</Heading>
+      <Heading>Iniciar sesión </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.email}>
           <FormLabel htmlFor="email">Usuario</FormLabel>
@@ -36,7 +41,7 @@ export const Login = () => {
             type="email"
             id="email"
             placeholder="Ingrese su usuario"
-            {...register("email", { required: "Este campo es obligatorio" })}
+            {...register("email", email)}
           />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
@@ -50,13 +55,7 @@ export const Login = () => {
               type={show ? "text" : "password"}
               placeholder="Ingrese su contraseña"
               autoComplete="current-password"
-              {...register("password", {
-                required: "Este campo es obligatorio",
-                minLength: {
-                  value: 6,
-                  message: "La contraseña debe tener al menos 6 caracteres",
-                },
-              })}
+              {...register("password", password)}
             />
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -66,7 +65,7 @@ export const Login = () => {
           </InputGroup>
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
-
+       
         <Button mt={4} colorScheme="teal" type="submit" width="100%">
           Iniciar sesion
         </Button>
@@ -77,9 +76,12 @@ export const Login = () => {
           width="100%"
           type="button"
         >
-          Iniciar sesion con Google
+          Iniciar sesión con Google
         </Button>
+
       </form>
+
+      
     </Box>
   );
 };

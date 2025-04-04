@@ -1,18 +1,19 @@
 import { Button, Heading, Box, Input } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { createProducts } from "../.services/orders";
+import { createProducts } from "../.services/order";
 import { useAuth } from "../context/AuthContext";
 
 export const Create = () => {
   const [values, setValues] = useState({
-    name: "",
+    name: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const { user } = useAuth();
 
-  console.log(user);
+
+
 
   const handleChange = (e) => {
     setValues({
@@ -24,40 +25,19 @@ export const Create = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(user);
+    
 
-    if (!user || !user.uid) {
-      setError(true);
-      console.log("Usuario no autenticado");
-      setLoading(false);
-      return;
-    }
     try {
-      const order = await createProducts(values.name, user); //
+       const order = await createProducts(values.name, user);
+       setValues({ name: "" });
 
-      console.log(order);
-      setValues({ name: "" });
-    } catch (error) {
+     } catch (error) {
       setError(true);
-      console.log("Error al crear producto:", error.message);
-
-      if (error.message === "Usuario no autenticado") {
-        alert("Por favor, inicia sesión para poder crear un producto.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-  //   try {
-  //     const orders = await createProducts(values.name, user.uid);
-  //     console.log(orders);
-  //   } catch (error) {
-  //     setError(true);
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+       console.log(error);
+     } finally {
+       setLoading(false);
+     }
+   };
 
   return (
     <Box maxW={"400px"} mx={"auto"} mt={"10px"} p={6}>

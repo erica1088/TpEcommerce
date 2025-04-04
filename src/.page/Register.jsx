@@ -62,12 +62,15 @@ export const Register = () => {
           </InputGroup>
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
+        
 
         <Button mt={4} colorScheme="teal" type="submit" width="100%">
           Registrarme
         </Button>
       </form>
+     
     </Box>
+    
   );
 };
 

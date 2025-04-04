@@ -19,6 +19,7 @@ import { useAuth } from "../context/AuthContext";
 import { NavLink, Link as RouterLink } from "react-router-dom";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import React from "react";
+import { FaShoppingCart } from "react-icons/fa";
 
 const NavLinks = ({ onClick }) => (
   <>
@@ -40,7 +41,7 @@ const NavLinks = ({ onClick }) => (
 const Header = () => {
   const { isOpen, onOpen, onClose, totalItems } = useDisclosure();
   const Mobile = useBreakpointValue({ base: true, md: true, lg: false });
-  const { user, logout } = useAuth();
+  const { logout, user } = useAuth();  // Getting user from AuthContext
 
   return (
     <Box>
@@ -77,8 +78,36 @@ const Header = () => {
                 Cerrar sesión
               </Button>
               <RouterLink to="/carrito">
-                <Button variant="ghost" fontSize="2xl">
-                  <Image src="public/carrito.png" width="35px" height="35px" />
+                <Button variant="ghost" fontSize="2xl" position="relative">
+                  <FaShoppingCart size="24px" />
+                  {user ? (
+                    totalItems > 0 ? (
+                      <Box
+                        position="absolute"
+                        top="-5px"
+                        right="-5px"
+                        color="white"
+                        fontSize="xs"
+                        background="red.500"
+                        borderRadius="full"
+                        width="16px"
+                        height="16px"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        {totalItems}
+                      </Box>
+                    ) : (
+                      <Text fontSize="sm" color="gray.500">
+                    
+                      </Text>
+                    )
+                  ) : (
+                    <Text fontSize="sm" color="gray.500">
+                      Inicia sesión
+                    </Text>
+                  )}
                 </Button>
               </RouterLink>
             </HStack>
@@ -93,10 +122,13 @@ const Header = () => {
             <DrawerBody>
               <Flex direction="column" gap={4}>
                 <NavLinks onClick={onClose} />
-                <NavLink to="/" onClick={logout}>
+                <NavLink as={Button} onClick={logout}>
                   <Text color="black" fontWeight="bold">
                     Cerrar sesión
                   </Text>
+                </NavLink>
+                <NavLink to="/carrito" onClick={onClose}>
+                  Mis pedidos
                 </NavLink>
               </Flex>
             </DrawerBody>
