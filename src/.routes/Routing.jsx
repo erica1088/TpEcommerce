@@ -5,6 +5,7 @@ import { Create } from "../.page/Create.jsx";
 import ProductPage from "../.page/ProductPage";
 import ProductList from "../.page/ProductList";
 import Home from "../.page/Home.jsx";
+import CartPage from "../.page/ProductPage";
 
 const Routing = () => {
   return (
@@ -15,7 +16,8 @@ const Routing = () => {
       <Route path="/Create" element={<Create />} />
       <Route path="/productList" element={<ProductPage />} />
       <Route path="/products" element={<ProductList />} />
-      <Route path="/CartPage" element={<ProductPage />} />
+      <Route path="/Cart" element={<ProductPage />} />
+      <Route path="/carrito" element={<CartPage />} />
     </Routes>
   );
 };

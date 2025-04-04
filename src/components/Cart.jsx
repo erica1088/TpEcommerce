@@ -6,7 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, getTotal } = useCart();
 
-  // Si no hay productos en el carrito, mostrar mensaje
+//Si no hay productos en el carrito mostrar mensaje
   if (cartItems.length === 0) {
     return (
       <Box textAlign="center" mt={10}>
