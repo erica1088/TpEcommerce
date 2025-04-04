@@ -73,7 +73,7 @@ const Header = () => {
           ) : (
             <HStack spacing={6}>
               <NavLinks />
-              <Button colorScheme="red" onClick={logout}>
+              <Button colorScheme="red" onClick={Logout}>
                 Cerrar sesión
               </Button>
               <RouterLink to="/carrito">
