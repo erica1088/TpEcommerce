@@ -105,7 +105,7 @@ const Header = () => {
                     )
                   ) : (
                     <Text fontSize="sm" color="gray.500">
-                      Inicia sesión
+                    
                     </Text>
                   )}
                 </Button>
