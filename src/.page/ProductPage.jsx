@@ -1,20 +1,29 @@
 import React from "react";
 import { Box, Button, Text, VStack, Stack, IconButton } from "@chakra-ui/react";
-import { useCart } from "../context/CartContext"; 
-import { FaTrashAlt } from "react-icons/fa"; 
+import { useCart } from "../context/CartContext";
+import { FaTrashAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 const CartPage = () => {
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, totalAmount, clearCart } = useCart();
-  const { user } = useAuth(); 
-  
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    totalAmount,
+    clearCart,
+  } = useCart();
+  const { user } = useAuth();
+
   if (!user) {
     return (
       <Box px={4} py={6}>
         <Text fontSize="3xl" fontWeight="bold" mb={6}>
           Carrito de compras
         </Text>
-        <Text>No estás logueado. Por favor, inicia sesión para ver tu carrito.</Text>
+        <Text>
+          No estás logueado. Por favor, inicia sesión para ver tu carrito.
+        </Text>
       </Box>
     );
   }
@@ -25,7 +34,6 @@ const CartPage = () => {
         Carrito de compras
       </Text>
 
-      
       {cart.length === 0 ? (
         <Text>No hay productos en el carrito.</Text>
       ) : (
@@ -61,10 +69,16 @@ const CartPage = () => {
                 </VStack>
 
                 <Stack direction="row" spacing={4} align="center">
-                  <Button size="sm" onClick={() => increaseQuantity(product.id)}>
+                  <Button
+                    size="sm"
+                    onClick={() => increaseQuantity(product.id)}
+                  >
                     Aumentar
                   </Button>
-                  <Button size="sm" onClick={() => decreaseQuantity(product.id)}>
+                  <Button
+                    size="sm"
+                    onClick={() => decreaseQuantity(product.id)}
+                  >
                     Disminuir
                   </Button>
                   <IconButton
@@ -81,7 +95,19 @@ const CartPage = () => {
         </VStack>
       )}
 
-
+      <h2>Tu Carrito</h2>
+      {cart.length === 0 ? (
+        <p>Tu carrito esta vacio</p>
+      ) : (
+        <div>
+          {cart.map((item) => (
+            <div key={item.id}>
+              <h3>{item.name}</h3>
+              <Button onClick={() => removeFromCart(item.id)}>Remove</Button>
+            </div>
+          ))}
+        </div>
+      )}
       {cart.length > 0 && (
         <Box mt={4}>
           <Text fontSize="lg" fontWeight="bold">

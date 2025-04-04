@@ -35,6 +35,7 @@ const NavLinks = ({ onClick }) => (
     <NavLink to="/login" onClick={onClick}>
       Iniciar sesión
     </NavLink>
+    
   </>
 );
 
@@ -120,16 +121,19 @@ const Header = () => {
             <DrawerCloseButton />
             <DrawerHeader>Menú</DrawerHeader>
             <DrawerBody>
+              
               <Flex direction="column" gap={4}>
+             
                 <NavLinks onClick={onClose} />
+                <NavLink to="/carrito" onClick={onClose}>
+                 Carrito
+                </NavLink>
                 <NavLink as={Button} onClick={logout}>
                   <Text color="black" fontWeight="bold">
                     Cerrar sesión
                   </Text>
                 </NavLink>
-                <NavLink to="/carrito" onClick={onClose}>
-                  Mis pedidos
-                </NavLink>
+               
               </Flex>
             </DrawerBody>
           </DrawerContent>

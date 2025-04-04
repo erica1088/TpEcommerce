@@ -4,32 +4,61 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
+  Alert,
+  AlertIcon,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext.jsx";
 import { email, password } from "../.utlis/Validations.js";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
-
+  const [isRegistered, setIsRegistered] = useState(false);
   const { register, formState, handleSubmit } = useForm();
   const { registerUser } = useAuth();
   const { errors } = formState;
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    registerUser(data);
+  const toast = useToast();
+
+  const onSubmit = async (data) => {
+    try {
+      await registerUser(data);
+      setIsRegistered(true);
+      toast({
+        title: "Se ha registrado con éxito",
+        description: "Ahora puedes iniciar sesión.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: "Error al registrar",
+
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
     <Box maxW="400px" mx="auto" mt="10">
+      <Heading>Nuevo Usuario</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Email field */}
         <FormControl isInvalid={errors.email}>
           <FormLabel htmlFor="email">Usuario</FormLabel>
           <Input
@@ -42,7 +71,6 @@ export const Register = () => {
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
 
-        {/* Password field */}
         <FormControl isInvalid={errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
           <InputGroup size="md">
@@ -55,22 +83,26 @@ export const Register = () => {
               {...register("password", password)}
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
+              <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>
                 {show ? <FiEyeOff /> : <FiEye />}
               </Button>
             </InputRightElement>
           </InputGroup>
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
-        
 
         <Button mt={4} colorScheme="teal" type="submit" width="100%">
           Registrarme
         </Button>
       </form>
-     
+
+      {isRegistered && (
+        <Alert status="success" mt={4}>
+          <AlertIcon />
+          Se ha registrado con éxito.
+        </Alert>
+      )}
     </Box>
-    
   );
 };
 

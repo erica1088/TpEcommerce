@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Box, SimpleGrid, Text, Image, Button, VStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  SimpleGrid,
+  Text,
+  Image,
+  Button,
+  VStack,
+  Stack,
+} from "@chakra-ui/react";
 import { getProducts } from "../.services/order";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
-import { useCart } from "../context/CartContext"; 
+import { useCart } from "../context/CartContext";
 import Footer from "../components/Footer";
 import Header from "../components//Header";
 
@@ -11,9 +19,9 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);  // state for the back to top button visibility
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const navigate = useNavigate();
-  const { addToCart } = useCart(); 
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,22 +38,21 @@ const ProductList = () => {
 
     fetchProducts();
 
-  
     const handleScroll = () => {
-      if (window.scrollY > 300) {  
+      if (window.scrollY > 300) {
         setShowBackToTop(true);
       } else {
         setShowBackToTop(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (loading) return <Text>Cargando productos...</Text>;
