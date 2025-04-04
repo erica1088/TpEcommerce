@@ -14,10 +14,11 @@ import {
   Text,
   Box,
   Image,
+
 } from "@chakra-ui/react";
 import { useAuth } from "../context/AuthContext";
-import { NavLink, Link as RouterLink } from "react-router-dom";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import {  NavLink, Link as RouterLink } from "react-router-dom";
+import { HamburgerIcon} from "@chakra-ui/icons";
 import React from "react";
 
 const NavLinks = ({ onClick }) => (
@@ -34,15 +35,19 @@ const NavLinks = ({ onClick }) => (
     <NavLink to="/login" onClick={onClick}>
       Iniciar sesión
     </NavLink>
+   
+  
   </>
 );
 
 const Header = () => {
   const { isOpen, onOpen, onClose, totalItems } = useDisclosure();
   const Mobile = useBreakpointValue({ base: true, md: true, lg: false });
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
   return (
+
+  
     <Box>
       <HStack wrap="wrap">
         <HStack
@@ -93,7 +98,7 @@ const Header = () => {
             <DrawerBody>
               <Flex direction="column" gap={4}>
                 <NavLinks onClick={onClose} />
-                <NavLink to="/" onClick={logout}>
+                <NavLink as={Button} onClick={logout}>
                   <Text color="black" fontWeight="bold">
                     Cerrar sesión
                   </Text>
@@ -104,6 +109,7 @@ const Header = () => {
         </Drawer>
       </HStack>
     </Box>
+   
   );
 };
 

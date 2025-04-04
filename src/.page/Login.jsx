@@ -15,17 +15,21 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext.jsx";
 import { email, password } from "../.utlis/Validations.js";
 
+
 export const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   const { register, formState, handleSubmit } = useForm();
   const { errors } = formState;
-  const { login, signInWithGoogle } = useAuth();
+  const { login, signInWithGoogle, } = useAuth();
 
   const onSubmit = (data) => {
     login(data);
   };
+
+
+
 
   return (
     <Box maxW="400px" mx="auto" mt="10">
@@ -72,7 +76,7 @@ export const Login = () => {
           width="100%"
           type="button"
         >
-          Iniciar sesion con Google
+          Iniciar sesión con Google
         </Button>
 
       </form>

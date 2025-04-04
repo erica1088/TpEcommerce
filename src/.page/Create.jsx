@@ -11,7 +11,9 @@ export const Create = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const { user } = useAuth();
-  console.log(user);
+
+
+
 
   const handleChange = (e) => {
     setValues({
@@ -23,13 +25,11 @@ export const Create = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(user);
-
     
- 
+
     try {
        const order = await createProducts(values.name, user);
-       console.log(order);
+       setValues({ name: "" });
 
      } catch (error) {
       setError(true);
