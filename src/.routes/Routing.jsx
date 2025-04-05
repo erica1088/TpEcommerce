@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,  BrowserRouter } from "react-router-dom";
 import { Register } from "../.page/Register.jsx";
 import { Login } from "../.page/Login.jsx";
 import { Create } from "../.page/Create.jsx";
@@ -6,6 +6,8 @@ import ProductPage from "../.page/ProductPage";
 import ProductList from "../.page/ProductList";
 import Home from "../.page/Home.jsx";
 import CartPage from "../.page/ProductPage";
+import NotFound from "../.page/NotFound.jsx"
+
 
 const Routing = () => {
   return (
@@ -18,6 +20,7 @@ const Routing = () => {
       <Route path="/products" element={<ProductList />} />
       <Route path="/cart" element={<ProductPage />} />
       <Route path="/carrito" element={<CartPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
