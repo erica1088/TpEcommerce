@@ -11,12 +11,12 @@ const Routing = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Create" element={<Create />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/Cceate" element={<Create />} />
       <Route path="/productList" element={<ProductPage />} />
       <Route path="/products" element={<ProductList />} />
-      <Route path="/Cart" element={<ProductPage />} />
+      <Route path="/cart" element={<ProductPage />} />
       <Route path="/carrito" element={<CartPage />} />
     </Routes>
   );

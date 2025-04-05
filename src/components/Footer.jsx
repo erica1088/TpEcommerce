@@ -3,7 +3,7 @@ import { Box, HStack, IconButton, Text, Flex } from "@chakra-ui/react";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { BsJustify } from "react-icons/bs";
 
-const Footer = () => {
+const footer = () => {
   return (
     <Box
       as="footer"
@@ -63,4 +63,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default footer;

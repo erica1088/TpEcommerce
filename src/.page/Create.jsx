@@ -60,5 +60,6 @@ export const Create = () => {
         </Button>
       </form>
     </Box>
-  );
-};
+  )
+
+}

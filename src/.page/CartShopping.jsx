@@ -42,7 +42,7 @@ const CartShopping = ({ refreshProducts }) => {
       clearCart();
       setOrderSuccess(true);
       refreshProducts();
-      navigate("/Register");
+      navigate("/register");
     } catch (error) {
       console.error("Error al procesar el pedido:", error);
       alert("Hubo un problema al procesar tu pedido.");

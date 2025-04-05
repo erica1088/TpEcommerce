@@ -7,13 +7,12 @@ import {
   Button,
   VStack,
   Stack,
-  useToast,
   Input,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { getProducts } from "../.services/order";
 import { useNavigate } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import Footer from "../components/Footer";
@@ -23,9 +22,8 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
   const [quantity, setQuantity] = useState({});
-  const [sortOption, setSortOption] = useState(""); 
+  const [sortOption, setSortOption] = useState("");
   const { addToCart } = useCart();
   const { user } = useAuth();
   const toast = useToast();
@@ -45,23 +43,11 @@ const ProductList = () => {
     };
 
     fetchProducts();
-
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowBackToTop(true);
-      } else {
-        setShowBackToTop(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     if (products.length > 0 && sortOption) {
-      const sortedProducts = [...products]; 
+      const sortedProducts = [...products];
       switch (sortOption) {
         case "price_asc":
           sortedProducts.sort((a, b) => a.price - b.price);
@@ -81,10 +67,7 @@ const ProductList = () => {
 
       setProducts(sortedProducts);
     }
-  }, [sortOption, products.length]); 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, [sortOption, products.length]);
 
   const handleQuantityChange = (productId, value) => {
     const quantityValue = Math.max(0, parseInt(value, 10) || 0);
@@ -105,7 +88,7 @@ const ProductList = () => {
         isClosable: true,
         duration: 3000,
       });
-      navigate("/Login");
+      navigate("/login");
       return;
     }
 
@@ -194,13 +177,12 @@ const ProductList = () => {
                 boxSize="200px"
                 objectFit="cover"
               />
-              <Text fontSize="xl" fontWeight="semibold">
+              <Text fontSize="xl" fontWeight="semibold" isTruncated>
                 {product.name}
               </Text>
               <Text fontSize="lg" color="gray.600">
                 {product.price ? `$${product.price}` : "Precio no disponible"}
               </Text>
-              <Text textAlign="center">Stock: {product.stock}</Text>
 
               {/* Input para la cantidad */}
               <Stack direction="row" spacing={4} alignItems="center">
@@ -220,27 +202,10 @@ const ProductList = () => {
                 >
                   Agregar al carrito
                 </Button>
-
-                
               </Stack>
             </VStack>
           ))}
         </SimpleGrid>
-
-        {showBackToTop && (
-          <Button
-            position="fixed"
-            bottom="4"
-            right="4"
-            colorScheme="teal"
-            onClick={scrollToTop}
-            size="lg"
-            borderRadius="full"
-            boxShadow="lg"
-          >
-            ↑
-          </Button>
-        )}
       </Box>
       <Footer />
     </>

@@ -46,9 +46,9 @@ const CartPage = () => {
           <Text>No tienes productos en tu carrito.</Text>
         ) : (
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {cart.map((product) => (
+            {cart.map((products) => (
               <VStack
-                key={product.id}
+                key={products.id}
                 borderWidth="1px"
                 borderRadius="lg"
                 overflow="hidden"
@@ -57,31 +57,31 @@ const CartPage = () => {
                 boxShadow="sm"
               >
                 <Image
-                  src={product.image_url}
-                  alt={product.name}
+                  src={products.image_url}
+                  alt={products.name}
                   borderRadius="md"
                   boxSize={{ base: "150px", md: "200px" }}
                   objectFit="cover"
                 />
                 <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold">
-                  {product.name}
+                  {products.name}
                 </Text>
                 <Text
-                  ffontSize={{ base: "lg", md: "xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="semibold"
                   color="gray.600"
                 >
-                  {product.price ? `$${product.price}` : "Precio no disponible"}
+                  {products.price ? `$${products.price}` : "Precio no disponible"}
                 </Text>
                 <Text textAlign="center" fontSize={{ base: "sm", md: "md" }}>
-                  Stock: {product.stock}
+                  Stock: {products.stock}
                 </Text>
 
                 <Stack direction="row" spacing={4}>
                   <Button
                     colorScheme="red"
                     variant="solid"
-                    onClick={() => removeFromCart(product.id)} // Eliminar producto del carrito
+                    onClick={() => removeFromCart(products.id)} // Eliminar producto del carrito
                   >
                     Eliminar
                   </Button>
