@@ -37,9 +37,9 @@ const Home = () => {
         {error && <Text>Hubo un error</Text>}
 
         {loading && <Text>Loading...</Text>}
-        {products?.map((products) => {
-          <VStack key={products.id}>
-            <Text>{products.name}</Text>
+        {products?.map((product) => {
+          <VStack key={product.id}>
+            <Text>{product.name}</Text>
           </VStack>;
         })}
 
