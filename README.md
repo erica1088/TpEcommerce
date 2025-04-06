@@ -32,7 +32,7 @@ Instalación 🔧
 Clona el repositorio a tu máquina local:
 - git clone https://github.com/erica1088/TpEcommerce
 - Navega al directorio del proyecto:
-  cd ecommerce
+  cd TpEcommerce
 -Instala las dependencias:
 pnpm install
 -Crea un archivo .env y agrega tus credenciales de Firebase, usando las variables del archivo .env.example.
