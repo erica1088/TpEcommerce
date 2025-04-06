@@ -1,16 +1,18 @@
 import Header from "../components/Header.jsx";
-import { Box, Text, VStack } from "@chakra-ui/react";
+import { Box, Text, VStack, Button, Flex } from "@chakra-ui/react";
 import Footer from "../components/Footer.jsx";
 
 import { useEffect, useState } from "react";
-import { getProducts, getUserProducts } from "../.services/order.js";
+import { getProducts } from "../.services/order.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const { user } = useAuth;
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -29,49 +31,55 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <Flex direction="column" minHeight="100vh">
       <Header />
 
-      <Box>
-        {error && <Text>Hubo un error</Text>}
-
-        {loading && <Text>Loading...</Text>}
-        {products?.map((product) => {
-          <VStack key={product.id}>
-            <Text>{product.name}</Text>
-          </VStack>;
-        })}
-
-        {!products && !products?.length && <Text>No hay Productos</Text>}
-      </Box>
-
       <Box
+        flex="1"
         position="relative"
-        width="100%"
-        height="100vh"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        textAlign="center"
-        color="white"
-        px={4}
+        height={{ base: "80vh", md: "100vh" }}
+        px={{ base: 4, md: 12 }}
+        py={{ base: 8, md: 16 }}
       >
         <Box
           position="absolute"
           top={0}
           left={0}
           width="100%"
-          height="100%"
+          height="100vh"
           backgroundImage="url('/wood.jpg')"
           backgroundSize="contain"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
-          backgroundAttachment="fixed"
           zIndex={-1}
-        ></Box>
+        />
+        <Flex
+          align="center"
+          justify="center"
+          direction="column"
+          textAlign="center"
+          height="100vh"
+          color="white"
+          px={4}
+          zIndex={1}
+          position="relative"
+        >
+          <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="bold">
+            Home Wood
+          </Text>
+          <Button
+            colorScheme="teal"
+            size="lg"
+            mt={6}
+            onClick={() => navigate("/products")}
+          >
+            Ver más
+          </Button>
+        </Flex>
       </Box>
+
       <Footer />
-    </div>
+    </Flex>
   );
 };
 
