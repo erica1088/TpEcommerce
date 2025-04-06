@@ -48,4 +48,6 @@ React Router: Enrutamiento de la aplicación.
 
 Autora ✒️
 Erica Acosta
-![Image](https://github.com/user-attachments/assets/1d1f69ab-e0db-4522-9f13-bc0c3a291444)
+![Captura de pantalla 2025-04-06 202137](https://github.com/user-attachments/assets/81364bec-bb7c-4690-82fe-601f0430e042) ![Captura de pantalla 2025-04-06 202156](https://github.com/user-attachments/assets/22d8e885-8751-4fc0-8b0c-b725e532ed90)
+
+
