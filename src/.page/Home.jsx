@@ -80,7 +80,7 @@ const Home = () => {
               <span style={{ color: "#ffff" }}>Home Wood</span>
             </Text>
             <Text fontSize={{ base: "sm", md: "lg" }} mb={6}>
-              Encontra los mejores muebles de madera artesanal para tu hogar
+              Encontra los mejores muebles de Madera artesanal para tu hogar
             </Text>
             <Button
               colorScheme="#333333;"
