@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Logout
-  const Logout = () => {
+  const logout = () => {
     signOut(auth)
       .then(() => {
         toast({
@@ -131,7 +131,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, registerUser, login, Logout, signInWithGoogle }}
+      value={{ user, registerUser, login, logout, signInWithGoogle }}
     >
       {children}
     </AuthContext.Provider>

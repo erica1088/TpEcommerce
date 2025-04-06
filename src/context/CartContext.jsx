@@ -7,10 +7,8 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { user } = useAuth();
 
-  
   const addToCart = (item) => {
     if (!user) {
-   
       alert("Debes Iniciar sesión para poder realizar tu cmpra");
       return;
     }
@@ -18,7 +16,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (itemId) => {
-    setCart(cart.filter(item => item.id !== itemId));
+    setCart(cart.filter((item) => item.id !== itemId));
   };
 
   return (
@@ -29,4 +27,3 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
-

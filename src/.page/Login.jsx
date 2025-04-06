@@ -29,17 +29,21 @@ export const Login = () => {
     login(data);
   };
 
-  
-
   return (
-    <Box maxW={{ base: "90%", sm: "400px" }}
-    mx="auto"
-    mt={{ base: "8", sm: "10" }}
-    p={{ base: "4", sm: "6" }}>
-      <Heading fontSize={{ base: "2xl", sm: "3xl" }} mb={4}>Iniciar sesión </Heading>
+    <Box
+      maxW={{ base: "90%", sm: "400px" }}
+      mx="auto"
+      mt={{ base: "8", sm: "10" }}
+      p={{ base: "4", sm: "6" }}
+    >
+      <Heading fontSize={{ base: "2xl", sm: "3xl" }} mb={4}>
+        Iniciar sesión{" "}
+      </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.email}>
-          <FormLabel htmlFor="email" fontSize={{ base: "sm", sm: "md" }}>Usuario</FormLabel>
+          <FormLabel htmlFor="email" fontSize={{ base: "sm", sm: "md" }}>
+            Usuario
+          </FormLabel>
           <Input
             type="email"
             id="email"
@@ -50,7 +54,9 @@ export const Login = () => {
         </FormControl>
 
         <FormControl isInvalid={errors.password}>
-          <FormLabel htmlFor="password" fontSize={{ base: "sm", sm: "md" }}>Contraseña</FormLabel>
+          <FormLabel htmlFor="password" fontSize={{ base: "sm", sm: "md" }}>
+            Contraseña
+          </FormLabel>
           <InputGroup size="md">
             <Input
               id="password"

@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Button, Text, VStack, Stack, IconButton, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Text,
+  VStack,
+  Stack,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -21,7 +29,7 @@ const Cart = () => {
         <Text fontSize="3xl" fontWeight="bold">
           Carrito de Compras
         </Text>
-        
+
         {/* Lista de productos en el carrito */}
         {cartItems.map((item) => (
           <Box
@@ -33,10 +41,10 @@ const Cart = () => {
             justifyContent="space-between"
             alignItems="center"
             width="100%"
-            flexWrap="wrap" // Permite que los elementos se acomoden en pantallas pequeñas
+            flexWrap="wrap"
           >
             <Stack
-              direction={{ base: "column", md: "row" }} // Responsivo
+              direction={{ base: "column", md: "row" }}
               spacing={4}
               align="center"
               width="100%"

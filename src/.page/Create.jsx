@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 export const Create = () => {
   const [values, setValues] = useState({
-    name: '',
+    name: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);

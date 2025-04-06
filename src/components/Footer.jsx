@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, HStack, IconButton, Text, Flex } from "@chakra-ui/react";
+import { Box, HStack, IconButton, Text, Flex, Image } from "@chakra-ui/react";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { BsJustify } from "react-icons/bs";
 
@@ -27,6 +27,16 @@ const footer = () => {
         height={"100%"}
         flexDirection={{ base: "column", md: "row" }}
       >
+        <Box mb={{ base: 4, md: "row" }}>
+          <Image
+            src="/logoH.jpg"
+            alt="Logo"
+            height="80px"
+            objectFit="contain"
+            borderRadius="45px"
+          />
+        </Box>
+
         <HStack spacing={4}>
           <IconButton
             as="a"
@@ -48,15 +58,20 @@ const footer = () => {
             fontSize="2xl"
             _hover={{ color: "blue.800" }}
           />
-          <IconButton as="a" href="https://www.instagram.com/eriacostaa/?utm_source=qr&igsh=djhxYjYyM2l4N2xo#" target="_blank"icon={<FaInstagram />}
+          <IconButton
+            as="a"
+            href="https://www.instagram.com/eriacostaa/?utm_source=qr&igsh=djhxYjYyM2l4N2xo#"
+            target="_blank"
+            icon={<FaInstagram />}
             aria-label="LinkedIn"
             variant="ghost"
             fontSize="2xl"
-            _hover={{ color: "blue.800" }} />
+            _hover={{ color: "blue.800" }}
+          />
         </HStack>
       </Flex>
 
-      <Text fontSize="sm" textAlign="center" mt={4}>
+      <Text fontSize="sm" textAlign="center" mt={6}>
         @2025 Erica Acosta. Todos los derechos reservados
       </Text>
     </Box>

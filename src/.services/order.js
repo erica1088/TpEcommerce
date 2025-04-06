@@ -1,22 +1,29 @@
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-export const createProducts = async (name, uid) => {
-  const doc = await addDoc(collection(db, "products"), {
-    name,
-    uid,
-    isCompleted: false,
-  });
+export const createProducts = async (cart, uid) => {
+  const productRefs = [];
 
-  console.log("Documento escrito con ID: ", doc.id);
-  return doc;
+  for (const product of cart) {
+    const doc = await addDoc(collection(db, "products"), {
+      name: product.name,
+      price: product.price,
+      uid,
+      quantity: product.quantity,
+      productId: product.id,
+      image_url: product.image_url,
+      createdAt: new Date(),
+    });
+    productRefs.push(doc);
+  }
+
+  return productRefs;
 };
 
 export const getProducts = async () => {
   const data = await getDocs(collection(db, "products"));
   let products = [];
   data.forEach((doc) => {
-    // console.log(`${doc.id} => ${doc.data()}`);
     products.push({
       ...doc.data(),
       id: doc.id,
@@ -32,7 +39,6 @@ export const getUserProducts = async (uid) => {
 
   let products = [];
   data.forEach((doc) => {
-    // console.log(`${doc.id} => ${doc.data()}`);
     products.push({
       ...doc.data(),
       id: doc.id,
