@@ -39,7 +39,7 @@ const Home = () => {
         position="relative"
         height={{ base: "80vh", md: "100vh" }}
         px={{ base: 4, md: 12 }}
-        py={{ base: 8, md: 16 }}
+        py={{ base: 8, md: 15 }}
       >
         <Box
           position="absolute"
