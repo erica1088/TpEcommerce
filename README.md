@@ -30,9 +30,9 @@ simple-import-sort: Herramienta para organizar automáticamente las importacione
 
 Instalación 🔧
 Clona el repositorio a tu máquina local:
-- git clone https://github.com/erica1088/TpEcommerce/tree/main
+- git clone https://github.com/erica1088/TpEcommerce
 - Navega al directorio del proyecto:
-  cd homeWood
+  cd ecommerce
 -Instala las dependencias:
 pnpm install
 -Crea un archivo .env y agrega tus credenciales de Firebase, usando las variables del archivo .env.example.
