@@ -30,7 +30,7 @@ simple-import-sort: Herramienta para organizar automáticamente las importacione
 
 Instalación 🔧
 Clona el repositorio a tu máquina local:
-- git clone https://github.com/ericaacosta/homeWood
+- git clone https://github.com/erica1088/TpEcommerce/tree/main
 - Navega al directorio del proyecto:
   cd homeWood
 -Instala las dependencias:
