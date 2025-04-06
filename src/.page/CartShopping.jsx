@@ -28,7 +28,6 @@ const CartShopping = ({ refreshProducts }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
- 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handleCheckout = async () => {
@@ -143,7 +142,7 @@ const CartShopping = ({ refreshProducts }) => {
 
           <Box display="flex" justifyContent="center">
             <Button colorScheme="red" mt={4} onClick={clearCart}>
-               Vaciar Carrito
+              Vaciar Carrito
             </Button>
             <Button
               colorScheme="green"
@@ -164,13 +163,12 @@ const CartShopping = ({ refreshProducts }) => {
               fontSize="md"
               fontWeight="normal"
             >
-              Seguir comprando 
+              Seguir comprando
             </Button>
           </RouterLink>
         </>
       )}
 
-      
       <Drawer
         isOpen={isDrawerOpen}
         placement="right"

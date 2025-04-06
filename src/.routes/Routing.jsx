@@ -11,18 +11,24 @@ import NotFound from "../.page/NotFound.jsx"
 
 const Routing = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/create" element={<Create />} />
-      <Route path="/productList" element={<ProductPage />} />
-      <Route path="/products" element={<ProductList />} />
-      <Route path="/cart" element={<ProductPage />} />
-      <Route path="/carrito" element={<CartPage />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  );
-};
+    
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/productList" element={<ProductPage />} />
+  
+        {/* Rutas protegidas */}
+        <Route element={<ProtectRoute />}>
+          <Route path="/create" element={<Create />} />
+          <Route path="/cart" element={<ProductPage />} />
+          <Route path="/carrito" element={<CartPage />} />
+        </Route>
+  
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    );
+  };
 
 export default Routing;

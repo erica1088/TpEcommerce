@@ -41,7 +41,7 @@ const NavLinks = ({ onClick }) => (
 const Header = () => {
   const { isOpen, onOpen, onClose, totalItems } = useDisclosure();
   const Mobile = useBreakpointValue({ base: true, md: true, lg: false });
-  const { Logout, user } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <Box>
       <HStack wrap="wrap">
@@ -54,26 +54,56 @@ const Header = () => {
         >
           {/* Logo y nombre de la tienda */}
           <HStack spacing={2}>
-            <Text
-              fontSize={{ base: "20px", md: "30px", lg: "46px" }}
-              fontWeight="bold"
-              fontFamily="'Playfair Display', serif"
-            >
-              Home wood
-            </Text>
+            <Image
+              src="/logoH.jpg"
+              alt="Logo"
+              boxSize={{ base: "80px", md: "40px", lg: "120px" }}
+              borderRadius="45px"
+              objectFit="contain"
+            />
           </HStack>
 
           {Mobile ? (
-            <IconButton
-              aria-label="Abrir menú"
-              icon={<HamburgerIcon />}
-              onClick={onOpen}
-              variant="outline"
-            />
+            <Flex width="100%" align="center" justify="space-between">
+              {/* Menú hamburguesa a la izquierda */}
+              <IconButton
+                aria-label="Abrir menú"
+                icon={<HamburgerIcon />}
+                onClick={onOpen}
+                variant="outline"
+              />
+
+              {/* Carrito a la derecha */}
+              {user && (
+                <RouterLink to="/carrito">
+                  <Button variant="ghost" fontSize="2xl" position="relative">
+                    <FaShoppingCart size="24px" />
+                    {totalItems > 0 && (
+                      <Box
+                        position="absolute"
+                        top="-5px"
+                        right="-5px"
+                        color="white"
+                        fontSize="xs"
+                        background="red.500"
+                        borderRadius="full"
+                        width="16px"
+                        height="16px"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        {totalItems}
+                      </Box>
+                    )}
+                  </Button>
+                </RouterLink>
+              )}
+            </Flex>
           ) : (
             <HStack spacing={6}>
               <NavLinks />
-              <Button colorScheme="red" onClick={Logout}>
+              <Button colorScheme="#D5C792;" onClick={logout}>
                 Cerrar sesión
               </Button>
               <RouterLink to="/carrito">
@@ -120,7 +150,7 @@ const Header = () => {
                 <NavLink to="/carrito" onClick={onClose}>
                   Carrito
                 </NavLink>
-                <NavLink as={Button} onClick={Logout}>
+                <NavLink as={Button} onClick={logout}>
                   <Text color="black" fontWeight="bold">
                     Cerrar sesión
                   </Text>

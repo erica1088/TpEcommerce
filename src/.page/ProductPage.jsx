@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -7,27 +7,72 @@ import {
   VStack,
   Image,
   Stack,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const CartPage = () => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, clearCart } = useCart();
   const navigate = useNavigate();
 
+  const { user } = useAuth();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [productToDelete, setProductToDelete] = useState(null);
   const totalPrice = cart.reduce(
     (acc, product) => acc + (product.price || 0),
     0
   );
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (!user) {
+      alert("Debes iniciar sesión para completar tu compra.");
+      return;
+    }
     if (!cart.length) {
       alert("Tu carrito está vacío.");
       return;
     }
-    navigate("/checkout");
+    for (const product of cart) {
+      if (product.quantity > product.stock) {
+        return;
+      }
+    }
+
+    try {
+      await createProducts(cart, user.uid);
+      clearCart();
+      navigate("/gracias");
+    } catch (error) {
+      console.error("Error al procesar la compra:", error);
+      alert("Hubo un problema al procesar tu pedido.");
+    }
+  };
+
+  const handleBackToHome = () => {
+    navigate("/products");
+  };
+
+  const handleDeleteProduct = (productId) => {
+    setProductToDelete(productId);
+    onOpen();
+  };
+
+  const confirmDelete = () => {
+    if (productToDelete !== null) {
+      removeFromCart(productToDelete);
+      onClose();
+    }
   };
 
   return (
@@ -43,12 +88,17 @@ const CartPage = () => {
         </Text>
 
         {cart.length === 0 ? (
-          <Text>No tienes productos en tu carrito.</Text>
+          <Box textAlign="center">
+            <Text>No tienes productos en tu carrito.</Text>
+            <Button mt={4} colorScheme="teal" onClick={handleBackToHome}>
+              Volver a productos
+            </Button>
+          </Box>
         ) : (
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {cart.map((products) => (
+            {cart.map((product) => (
               <VStack
-                key={products.id}
+                key={product.id}
                 borderWidth="1px"
                 borderRadius="lg"
                 overflow="hidden"
@@ -57,31 +107,32 @@ const CartPage = () => {
                 boxShadow="sm"
               >
                 <Image
-                  src={products.image_url}
-                  alt={products.name}
+                  src={product.image_url}
+                  alt={product.name}
                   borderRadius="md"
                   boxSize={{ base: "150px", md: "200px" }}
                   objectFit="cover"
                 />
                 <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold">
-                  {products.name}
+                  {product.name}
                 </Text>
                 <Text
-                  fontSize={{ base: "lg", md: "xl" }}
-                  fontWeight="semibold"
+                  fontSize={{ base: "sm", sm: "md", md: "lg" }}
                   color="gray.600"
+                  textAlign="center"
                 >
-                  {products.price ? `$${products.price}` : "Precio no disponible"}
+                  {product.price ? `$${product.price}` : "Precio no disponible"}
                 </Text>
+
                 <Text textAlign="center" fontSize={{ base: "sm", md: "md" }}>
-                  Stock: {products.stock}
+                  Stock: {product.stock}
                 </Text>
 
                 <Stack direction="row" spacing={4}>
                   <Button
                     colorScheme="red"
                     variant="solid"
-                    onClick={() => removeFromCart(products.id)} // Eliminar producto del carrito
+                    onClick={() => handleDeleteProduct(product.id)}
                   >
                     Eliminar
                   </Button>
@@ -97,17 +148,52 @@ const CartPage = () => {
             display="flex"
             flexDirection={{ base: "column", md: "row" }}
             justifyContent="space-between"
-            alignItems="center"
+            alignItems={{ base: "stretch", md: "center" }}
+            gap={4}
           >
-            <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold">
-              Total: ${totalPrice.toFixed(2)}
-            </Text>
-            <Button colorScheme="teal" onClick={handleCheckout}>
-              Proceder a la compra
-            </Button>
+            <Stack
+              direction={{ base: "column", sm: "row" }}
+              spacing={4}
+              width={{ base: "100%", md: "auto" }}
+            >
+              <Button
+                variant="outline"
+                colorScheme="gray"
+                onClick={handleBackToHome}
+              >
+                Seguir comprando
+              </Button>
+              <Button
+                colorScheme="teal"
+                onClick={handleCheckout}
+                width={{ base: "100%", md: "auto" }}
+              >
+                Iniciar Compra
+              </Button>
+            </Stack>
           </Box>
         )}
       </Box>
+
+      <AlertDialog isOpen={isOpen} onClose={onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Confirmar eliminación
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              ¿Estás seguro de que deseas eliminar este producto de tu carrito?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={onClose}>Cancelar</Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Eliminar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
       <Footer />
     </>
   );
