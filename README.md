@@ -1,5 +1,7 @@
 
 Proyecto Final React: E-commerce "Home Wood" 🪵✨
+
+
 Home Wood es una aplicación de comercio electrónico desarrollada con React, diseñada para exhibir y vender productos artesanales de madera para el hogar. El sistema permite a los usuarios explorar los artículos disponibles, añadirlos al carrito, modificarlos y finalizar su compra de forma simple y amigable. Utiliza Firebase como servicio backend y Chakra UI para una interfaz limpia y accesible.
 
 🚀 Comenzando
