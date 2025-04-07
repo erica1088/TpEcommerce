@@ -46,35 +46,52 @@ const Home = () => {
           top={0}
           left={0}
           width="100%"
-          height="100vh"
+          height="100%"
           backgroundImage="url('/wood.jpg')"
-          backgroundSize="contain"
+          backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
           zIndex={-1}
         />
+
         <Flex
           align="center"
           justify="center"
           direction="column"
           textAlign="center"
-          height="100vh"
+          height="100%"
           color="white"
           px={4}
           zIndex={1}
           position="relative"
         >
-          <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="bold">
-            Home Wood
-          </Text>
-          <Button
-            colorScheme="teal"
-            size="lg"
-            mt={6}
-            onClick={() => navigate("/products")}
+          <Box
+            bg="rgba(0, 0, 0, 0.5)"
+            p={{ base: 4, md: 8 }}
+            borderRadius="xl"
+            maxW="90%"
+            m={{ base: 8, md: 120}}
           >
-            Ver más
-          </Button>
+            <Text
+              fontSize={{ base: "2xl", sm: "3xl", md: "5xl" }}
+              fontWeight="bold"
+              mb={10}
+            >
+              <span style={{ color: "#ffff" }}>Home Wood</span>
+            </Text>
+            <Text fontSize={{ base: "sm", md: "lg" }} mb={6}>
+              Encontra los mejores muebles de Madera artesanal para tu hogar
+            </Text>
+            <Button
+              colorScheme="#333333;"
+              size={{ base: "md", md: "lg" }}
+              px={{ base: 6, md: 10 }}
+              onClick={() => navigate("/products")}
+              _hover={{ bg: "gray.200" }}
+            >
+              Ver productos
+            </Button>
+          </Box>
         </Flex>
       </Box>
 
