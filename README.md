@@ -58,7 +58,8 @@ Chakra UI – Sistema de diseño accesible y moderno.
 
 Firebase – Plataforma backend para almacenamiento de datos y autenticación.
 ✒️ Autora  Erica Acosta
-![home wood proyecto](https://github.com/user-attachments/assets/4e7ffdb0-04ce-4835-a938-5245f0ba9ace)
+![Captura de pantalla 2025-04-06 211900](https://github.com/user-attachments/assets/b62c734e-65f9-40fa-8ed6-899e159d417e)
+
 
 ![Captura de pantalla 2025-04-06 202156](https://github.com/user-attachments/assets/82436c69-783d-472a-8593-ba4199ed8ff5)
 
