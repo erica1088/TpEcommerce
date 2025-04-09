@@ -19,7 +19,7 @@ import { useAuth } from "../context/AuthContext";
 import { NavLink, Link as RouterLink } from "react-router-dom";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import React from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import CartDrawer from "../.page/CartDrawer";
 
 const NavLinks = ({ onClick }) => (
   <>
@@ -39,127 +39,69 @@ const NavLinks = ({ onClick }) => (
 );
 
 const Header = () => {
-  const { isOpen, onOpen, onClose, totalItems } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const Mobile = useBreakpointValue({ base: true, md: true, lg: false });
   const { logout, user } = useAuth();
+
   return (
-    <Box>
-      <HStack wrap="wrap">
-        <HStack
-          justify="space-between"
-          align="center"
-          maxW="1200px"
-          mx="auto"
-          position="center"
-        >
-          {/* Logo y nombre de la tienda */}
-          <HStack spacing={2}>
-            <Image
-              src="/logoH.jpg"
-              alt="Logo"
-              boxSize={{ base: "80px", md: "40px", lg: "120px" }}
-              borderRadius="45px"
-              objectFit="contain"
-            />
-          </HStack>
-
-          {Mobile ? (
-            <Flex width="100%" align="center" justify="space-between">
-              {/* Menú hamburguesa a la izquierda */}
-              <IconButton
-                aria-label="Abrir menú"
-                icon={<HamburgerIcon />}
-                onClick={onOpen}
-                variant="outline"
-              />
-
-              {/* Carrito a la derecha */}
-              {user && (
-                <RouterLink to="/carrito">
-                  <Button variant="ghost" fontSize="2xl" position="relative">
-                    <FaShoppingCart size="24px" />
-                    {totalItems > 0 && (
-                      <Box
-                        position="absolute"
-                        top="-5px"
-                        right="-5px"
-                        color="white"
-                        fontSize="xs"
-                        background="red.500"
-                        borderRadius="full"
-                        width="16px"
-                        height="16px"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        {totalItems}
-                      </Box>
-                    )}
-                  </Button>
-                </RouterLink>
-              )}
-            </Flex>
-          ) : (
-            <HStack spacing={6}>
-              <NavLinks />
-              <Button colorScheme="#D5C792;" onClick={logout}>
-                Cerrar sesión
-              </Button>
-              <RouterLink to="/carrito">
-                <Button variant="ghost" fontSize="2xl" position="relative">
-                  <FaShoppingCart size="24px" />
-                  {user ? (
-                    totalItems > 0 ? (
-                      <Box
-                        position="absolute"
-                        top="-5px"
-                        right="-5px"
-                        color="white"
-                        fontSize="xs"
-                        background="red.500"
-                        borderRadius="full"
-                        width="16px"
-                        height="16px"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        {totalItems}
-                      </Box>
-                    ) : (
-                      <Text fontSize="sm" color="gray.500"></Text>
-                    )
-                  ) : (
-                    <Text fontSize="sm" color="gray.500"></Text>
-                  )}
-                </Button>
-              </RouterLink>
-            </HStack>
-          )}
+    <Box bg="white" boxShadow="md" py={2}>
+      <Flex
+        justify="space-between"
+        align="center"
+        maxW="1200px"
+        mx="auto"
+        px={4}
+        fontFamily="'roboto', sans-serif"
+      >
+        {/* Logo */}
+        <HStack spacing={4}>
+          <Image
+            src="/logoH.jpg"
+            alt="Logo"
+            boxSize={{ base: "60px", md: "80px" }}
+            borderRadius="full"
+            objectFit="contain"
+          />
         </HStack>
 
-        <Drawer isOpen={isOpen} placement="top" onClose={onClose}>
-          <DrawerOverlay />
-          <DrawerContent bg="#b39c97" fontFamily="'Playfair Display', serif">
-            <DrawerCloseButton />
-            <DrawerHeader>Menú</DrawerHeader>
-            <DrawerBody>
-              <Flex direction="column" gap={4}>
-                <NavLinks onClick={onClose} />
-                <NavLink to="/carrito" onClick={onClose}>
-                  Carrito
-                </NavLink>
-                <NavLink as={Button} onClick={logout}>
-                  <Text color="black" fontWeight="bold">
-                    Cerrar sesión
-                  </Text>
-                </NavLink>
-              </Flex>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </HStack>
+        {/* Navegación y acciones */}
+        {Mobile ? (
+          <Flex align="center" gap={4}>
+            <IconButton
+              aria-label="Abrir menú"
+              icon={<HamburgerIcon />}
+              onClick={onOpen}
+              variant="outline"
+            />
+            <CartDrawer />
+          </Flex>
+        ) : (
+          <HStack spacing={6} align="center">
+            <NavLinks />
+            {user && (
+              <Button onClick={logout} colorScheme="#a88e88;" size="sm">
+                Cerrar sesión
+              </Button>
+            )}
+            <CartDrawer />
+          </HStack>
+        )}
+      </Flex>
+
+      {/* Drawer del menú hamburguesa */}
+      <Drawer isOpen={isOpen} placement="top" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent bg="#d3d1d1">
+          <DrawerCloseButton />
+          <DrawerHeader>Menú</DrawerHeader>
+          <DrawerBody>
+            <Flex direction="column" gap={4}>
+              <NavLinks onClick={onClose} />
+              {user && <Text onClick={logout}>Cerrar sesión</Text>}
+            </Flex>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };

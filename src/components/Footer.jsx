@@ -1,43 +1,33 @@
 import React from "react";
 import { Box, HStack, IconButton, Text, Flex, Image } from "@chakra-ui/react";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { BsJustify } from "react-icons/bs";
 
-const footer = () => {
+const Footer = () => {
   return (
     <Box
       as="footer"
-      color="white"
       width="100%"
-      minHeight="150px"
-      py={8}
+      minHeight="60px"
+      py={4}
       px={6}
       bg="#d3d1d1"
-      position="relative"
       bottom={0}
       left={0}
       zIndex={1000}
     >
-      <Flex
-        justify="center"
-        align="center"
-        maxW="1200px"
-        mx="auto"
-        direction={"column"}
-        height={"100%"}
-        flexDirection={{ base: "column", md: "row" }}
-      >
-        <Box mb={{ base: 4, md: "row" }}>
-          <Image
-            src="/logoH.jpg"
-            alt="Logo"
-            height="80px"
-            objectFit="contain"
-            borderRadius="45px"
-          />
-        </Box>
+      {/* Contenedor principal en columna */}
+      <Flex direction="column" align="center" maxW="1200px" mx="auto" gap={3}>
+        {/* Logo */}
+        <Image
+          src="/logoH.jpg"
+          alt="Logo"
+          height={{ base: "40px", md: "50px" }}
+          objectFit="contain"
+          borderRadius="30px"
+        />
 
-        <HStack spacing={4}>
+        {/* Íconos centrados */}
+        <HStack spacing={{ base: 3, md: 4 }} justify="center">
           <IconButton
             as="a"
             href="https://wa.me/1564595781"
@@ -45,7 +35,7 @@ const footer = () => {
             icon={<FaWhatsapp />}
             aria-label="WhatsApp"
             variant="ghost"
-            fontSize="2xl"
+            boxSize={{ base: 10, md: 12 }}
             _hover={{ color: "green.500" }}
           />
           <IconButton
@@ -55,7 +45,7 @@ const footer = () => {
             icon={<FaLinkedin />}
             aria-label="LinkedIn"
             variant="ghost"
-            fontSize="2xl"
+            boxSize={{ base: 10, md: 12 }}
             _hover={{ color: "blue.800" }}
           />
           <IconButton
@@ -63,19 +53,20 @@ const footer = () => {
             href="https://www.instagram.com/eriacostaa/?utm_source=qr&igsh=djhxYjYyM2l4N2xo#"
             target="_blank"
             icon={<FaInstagram />}
-            aria-label="LinkedIn"
+            aria-label="Instagram"
             variant="ghost"
-            fontSize="2xl"
-            _hover={{ color: "blue.800" }}
+            boxSize={{ base: 10, md: 12 }}
+            _hover={{ color: "pink.500" }}
           />
         </HStack>
       </Flex>
 
-      <Text fontSize="sm" textAlign="center" mt={6}>
-        @2025 Erica Acosta. Todos los derechos reservados
+      {/* Copyright */}
+      <Text fontSize="xs" textAlign="center" mt={2}>
+        © 2025 Erica Acosta. Todos los derechos reservados.
       </Text>
     </Box>
   );
 };
 
-export default footer;
+export default Footer;

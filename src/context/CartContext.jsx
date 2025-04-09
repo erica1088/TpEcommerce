@@ -6,21 +6,46 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { user } = useAuth();
-
-  const addToCart = (item) => {
-    if (!user) {
-      alert("Debes Iniciar sesión para poder realizar tu cmpra");
-      return;
-    }
-    setCart((prevCart) => [...prevCart, item]);
+  const clearCart = () => {
+    setCart([]);
+  };
+  const updateQuantity = (productId, newQuantity) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      )
+    );
   };
 
-  const removeFromCart = (itemId) => {
-    setCart(cart.filter((item) => item.id !== itemId));
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        setCart,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -1,6 +1,8 @@
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/config";
 
+
+
 export const createProducts = async (cart, uid) => {
   const productRefs = [];
 

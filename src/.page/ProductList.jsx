@@ -7,7 +7,6 @@ import {
   Button,
   VStack,
   Stack,
-  Input,
   Select,
   useToast,
   Modal,
@@ -21,17 +20,18 @@ import {
 } from "@chakra-ui/react";
 import { getProducts } from "../.services/order";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+
 import { useAuth } from "../context/AuthContext";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { FaArrowUp } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [quantity, setQuantity] = useState({});
+
   const [sortOption, setSortOption] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -39,7 +39,6 @@ const ProductList = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -97,17 +96,7 @@ const ProductList = () => {
     };
   }, []);
 
-  const handleQuantityChange = (productId, value) => {
-    const quantityValue = Math.max(0, parseInt(value, 10) || 0);
-    setQuantity((prev) => ({
-      ...prev,
-      [productId]: quantityValue,
-    }));
-  };
-
   const handleAddToCart = (product) => {
-    const selectedQuantity = quantity[product.id] || 0;
-
     if (!user) {
       toast({
         title: "Error",
@@ -120,10 +109,10 @@ const ProductList = () => {
       return;
     }
 
-    if (selectedQuantity < 1 || selectedQuantity > product.stock) {
+    if (product.stock < 1) {
       toast({
-        title: "Error",
-        description: `Por favor, elige una cantidad válida entre 1 y ${product.stock}.`,
+        title: "Producto sin stock",
+        description: "Este producto no tiene unidades disponibles.",
         status: "error",
         isClosable: true,
         duration: 3000,
@@ -131,28 +120,10 @@ const ProductList = () => {
       return;
     }
 
-    if (selectedQuantity === 0) {
-      toast({
-        title: "Cantidad inválida",
-        description: "No puedes agregar 0 unidades al carrito.",
-        status: "warning",
-        isClosable: true,
-        duration: 3000,
-      });
-      return;
-    }
-
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image_url: product.image_url,
-      quantity: selectedQuantity,
-    });
-
+    addToCart(product);
     toast({
       title: "Producto agregado",
-      description: `El producto ha sido agregado a tu carrito (${selectedQuantity} unidades).`,
+      description: `Se agregó 1 unidad al carrito.`,
       status: "success",
       isClosable: true,
       duration: 3000,
@@ -186,7 +157,6 @@ const ProductList = () => {
           Productos
         </Text>
 
-        {/* Filtro de orden */}
         <Box mb={6}>
           <Text
             fontSize={{ base: "md", md: "lg" }}
@@ -236,7 +206,10 @@ const ProductList = () => {
                 fontWeight="semibold"
                 isTruncated
                 textAlign="center"
-              ></Text>
+                fontFamily="'Playfair Display', serif"
+              >
+                {product.name}
+              </Text>
               <Text
                 fontSize={{ base: "sm", sm: "md", md: "lg" }}
                 color="gray.600"
@@ -248,36 +221,30 @@ const ProductList = () => {
               {/* Input para la cantidad */}
               <Stack
                 direction={{ base: "column", sm: "row" }}
-                spacing={{ base: 2, sm: 4 }}
+                spacing={{ base: 2, sm: 3 }}
                 alignItems="center"
               >
-                <Input
-                  type="number"
-                  min={0}
-                  max={product.stock}
-                  value={quantity[product.id] || 0}
-                  onChange={(e) =>
-                    handleQuantityChange(product.id, e.target.value)
-                  }
-                  width={{ base: "60%", sm: "80px" }}
-                  size={{ base: "sm", sm: "md" }}
-                  textAlign="center"
-                />
-
                 <Button
-                  colorScheme="teal"
+                  colorScheme="#333333;"
                   variant="solid"
                   onClick={() => handleAddToCart(product)}
-                  size={{ base: "sm", sm: "md" }}
+                  size={{ base: "sm", sm: "sm" }}
                   width={{ base: "100%", sm: "auto" }}
+                  px={3}
+                  py={2}
+                  fontSize="sm"
+                  _hover={{ bg: "gray.200" }}
                 >
-                  Agregar al carrito
+                  Comprar
                 </Button>
 
                 <Button
-                  colorScheme="#D5C792;"
+                  colorScheme="#a88e88;"
                   onClick={() => handleViewDetails(product)}
-                  size={{ base: "sm", sm: "md" }}
+                  size={{ base: "sm", sm: "sm" }}
+                  px={3}
+                  py={2}
+                  fontSize="sm"
                 >
                   Ver Detalle
                 </Button>
@@ -317,7 +284,7 @@ const ProductList = () => {
           position="fixed"
           bottom={{ base: 6, md: 8 }}
           right={{ base: 6, md: 8 }}
-          colorScheme="teal"
+          colorScheme="#494c4f;"
           aria-label="Back to top"
           icon={<FaArrowUp />}
           size="lg"

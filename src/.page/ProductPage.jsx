@@ -2,35 +2,38 @@ import React, { useState } from "react";
 import {
   Box,
   Text,
-  SimpleGrid,
   Button,
-  VStack,
   Image,
   Stack,
   useDisclosure,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
+  IconButton,
+  Drawer,
+  DrawerCloseButton,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
 } from "@chakra-ui/react";
+import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { createProducts } from "../.services/order";
 
 const CartPage = () => {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const navigate = useNavigate();
 
   const { user } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productToDelete, setProductToDelete] = useState(null);
+
   const totalPrice = cart.reduce(
-    (acc, product) => acc + (product.price || 0),
+    (acc, product) => acc + product.price * product.quantity,
     0
   );
 
@@ -78,123 +81,95 @@ const CartPage = () => {
   return (
     <>
       <Header />
-      <Box
-        px={{ base: 4, md: 8 }}
-        py={{ base: 6, md: 12 }}
-        minHeight="calc(100vh - 150px)"
-      >
-        <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" mb={6}>
-          Carrito de Compras
-        </Text>
+      <IconButton
+        icon={<FaShoppingCart />}
+        onClick={onOpen}
+        variant="ghost"
+        colorScheme="#D5C792;"
+        aria-label="Ver carrito"
+      />
 
-        {cart.length === 0 ? (
-          <Box textAlign="center">
-            <Text>No tienes productos en tu carrito.</Text>
-            <Button mt={4} colorScheme="teal" onClick={handleBackToHome}>
-              Volver a productos
-            </Button>
-          </Box>
-        ) : (
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {cart.map((product) => (
-              <VStack
-                key={product.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                p={4}
-                spacing={4}
-                boxShadow="sm"
-              >
-                <Image
-                  src={product.image_url}
-                  alt={product.name}
-                  borderRadius="md"
-                  boxSize={{ base: "150px", md: "200px" }}
-                  objectFit="cover"
-                />
-                <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold">
-                  {product.name}
-                </Text>
-                <Text
-                  fontSize={{ base: "sm", sm: "md", md: "lg" }}
-                  color="gray.600"
-                  textAlign="center"
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Tu Carrito</DrawerHeader>
+
+          <DrawerBody>
+            {cart.length === 0 ? (
+              <Text>Tu carrito está vacío.</Text>
+            ) : (
+              cart.map((product) => (
+                <Box
+                  key={product.id}
+                  borderBottom="1px solid #e2e8f0"
+                  pb={4}
+                  mb={4}
                 >
-                  {product.price ? `$${product.price}` : "Precio no disponible"}
-                </Text>
+                  <Stack direction="row" spacing={4}>
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      boxSize="60px"
+                      objectFit="cover"
+                      borderRadius="md"
+                    />
+                    <Box flex="1">
+                      <Text fontWeight="semibold">{product.name}</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        ${product.price} x {product.quantity}
+                      </Text>
+                      <Stack direction="row" mt={1}>
+                        <Button
+                          size="xs"
+                          onClick={() =>
+                            updateQuantity(product.id, product.quantity - 1)
+                          }
+                          isDisabled={product.quantity <= 1}
+                        >
+                          -
+                        </Button>
+                        <Text>{product.quantity}</Text>
+                        <Button
+                          size="xs"
+                          onClick={() =>
+                            updateQuantity(product.id, product.quantity + 1)
+                          }
+                          isDisabled={product.quantity >= product.stock}
+                        >
+                          +
+                        </Button>
+                      </Stack>
+                      <Button
+                        size="xs"
+                        mt={2}
+                        colorScheme="red"
+                        variant="ghost"
+                        onClick={() => removeFromCart(product.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    </Box>
+                  </Stack>
+                </Box>
+              ))
+            )}
+          </DrawerBody>
 
-                <Text textAlign="center" fontSize={{ base: "sm", md: "md" }}>
-                  Stock: {product.stock}
-                </Text>
-
-                <Stack direction="row" spacing={4}>
-                  <Button
-                    colorScheme="red"
-                    variant="solid"
-                    onClick={() => handleDeleteProduct(product.id)}
-                  >
-                    Eliminar
-                  </Button>
-                </Stack>
-              </VStack>
-            ))}
-          </SimpleGrid>
-        )}
-
-        {cart.length > 0 && (
-          <Box
-            mt={6}
-            display="flex"
-            flexDirection={{ base: "column", md: "row" }}
-            justifyContent="space-between"
-            alignItems={{ base: "stretch", md: "center" }}
-            gap={4}
-          >
-            <Stack
-              direction={{ base: "column", sm: "row" }}
-              spacing={4}
-              width={{ base: "100%", md: "auto" }}
+          <DrawerFooter flexDirection="column" alignItems="start">
+            <Text fontWeight="bold" mb={2}>
+              Total: ${totalPrice}
+            </Text>
+            <Button
+              colorScheme="teal"
+              width="100%"
+              isDisabled={cart.length === 0}
             >
-              <Button
-                variant="outline"
-                colorScheme="gray"
-                onClick={handleBackToHome}
-              >
-                Seguir comprando
-              </Button>
-              <Button
-                colorScheme="teal"
-                onClick={handleCheckout}
-                width={{ base: "100%", md: "auto" }}
-              >
-                Iniciar Compra
-              </Button>
-            </Stack>
-          </Box>
-        )}
-      </Box>
-
-      <AlertDialog isOpen={isOpen} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Confirmar eliminación
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              ¿Estás seguro de que deseas eliminar este producto de tu carrito?
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button onClick={onClose}>Cancelar</Button>
-              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                Eliminar
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-
-      <Footer />
+              Finalizar compra
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
