@@ -223,9 +223,10 @@ const ProductList = () => {
                 direction={{ base: "column", sm: "row" }}
                 spacing={{ base: 2, sm: 3 }}
                 alignItems="center"
+             
               >
                 <Button
-                  colorScheme="#333333;"
+             colorScheme="#a88e88;"
                   variant="solid"
                   onClick={() => handleAddToCart(product)}
                   size={{ base: "sm", sm: "sm" }}
@@ -234,12 +235,14 @@ const ProductList = () => {
                   py={2}
                   fontSize="sm"
                   _hover={{ bg: "gray.200" }}
+                  
                 >
                   Comprar
                 </Button>
 
                 <Button
-                  colorScheme="#a88e88;"
+                background="#fffff;"
+                   border="1px solid #ccc"
                   onClick={() => handleViewDetails(product)}
                   size={{ base: "sm", sm: "sm" }}
                   px={3}
